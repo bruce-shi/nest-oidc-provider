@@ -7,11 +7,11 @@ import {
   Render,
   Res,
 } from '@nestjs/common';
-import { Response } from 'express';
 import { Oidc } from 'nest-oidc-provider'
 import { KoaContextWithOIDC } from 'oidc-provider';
 import axios from 'axios';
 import qs from 'query-string';
+import { FastifyReply, FastifyRequest } from 'fastify';
 
 @Controller()
 export class AppController {
@@ -40,7 +40,7 @@ export class AppController {
   }
 
   @Get('/callback')
-  async test(@Query() query: Record<string, any>, @Res() res: Response) {
+  async test(@Query() query: Record<string, any>, @Res() res: FastifyReply) {
     const { code, error, error_description } = query;
 
     if (error) {
@@ -74,7 +74,7 @@ export class AppController {
       this.logger.error('Could not get token:', err);
       res
         .status(err.response?.status ?? HttpStatus.INTERNAL_SERVER_ERROR)
-        .json(err.response?.data ?? err);
+        .send(err.response?.data ?? err);
     }
   }
 }

@@ -1,5 +1,5 @@
 import { ExecutionContext } from '@nestjs/common';
-import { IncomingMessage, ServerResponse } from 'http';
+import { FastifyReply, FastifyRequest } from 'fastify';
 
 export function validatePath(pathname?: string) {
   return (
@@ -14,7 +14,7 @@ export function validatePath(pathname?: string) {
 export function getReqRes(ctx: ExecutionContext) {
   const http = ctx.switchToHttp();
   return {
-    req: http.getRequest<IncomingMessage>(),
-    res: http.getResponse<ServerResponse>(),
+    req: http.getRequest<FastifyRequest>().raw,
+    res: http.getResponse<FastifyReply>().raw,
   };
 }

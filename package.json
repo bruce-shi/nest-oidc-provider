@@ -1,6 +1,6 @@
 {
-  "name": "nest-oidc-provider",
-  "version": "1.1.0",
+  "name": "@fwen/nest-oidc-provider",
+  "version": "1.1.2",
   "description": "oidc-provider module for Nest framework (node.js)",
   "author": "Adrian Cerbaro <adriancerbaro@gmail.com>",
   "license": "MIT",
@@ -59,6 +59,7 @@
     "eslint": "^8.8.0",
     "eslint-config-prettier": "^8.3.0",
     "express": "^4.17.2",
+    "fastify": "^4.7.0",
     "husky": "^7.0.4",
     "jest": "^27.4.7",
     "jest-mock": "^27.4.6",

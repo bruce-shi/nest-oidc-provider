@@ -7,13 +7,14 @@ import {
   VERSION_NEUTRAL,
 } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { Request, Response } from 'express';
 import { Provider } from 'oidc-provider';
 import { PATH_METADATA, VERSION_METADATA } from '@nestjs/common/constants';
+import { IncomingMessage, ServerResponse } from 'http';
+import { FastifyReply, FastifyRequest } from 'fastify';
 
 @Controller()
 export class OidcController {
-  private callback: (req: Request, res: Response) => void;
+  private callback: (req: IncomingMessage, res: ServerResponse) => void;
 
   constructor(
     readonly provider: Provider,
@@ -53,8 +54,11 @@ export class OidcController {
   }
 
   @All('/*')
-  public mountedOidc(@Req() req: Request, @Res() res: Response): void {
-    req.url = this.getUrl(req.originalUrl);
-    return this.callback(req, res);
+  public mountedOidc(@Req() req: FastifyRequest, @Res() res: FastifyReply): void {
+    const request = req.raw;
+    //@ts-ignore
+    request.body = req.body
+    request.url = this.getUrl(req.url)
+    return this.callback(request, res.raw);
   }
 }
